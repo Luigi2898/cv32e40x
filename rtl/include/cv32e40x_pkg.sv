@@ -1135,6 +1135,7 @@ typedef struct packed
   logic        exception;       // Can offloaded ins cause an exception?
   logic        loadstore; // Is offloaded ins a load or store?
   logic        dualwrite; // Will oflfoaded ins cause a dual writeback?
+  logic        dualread; // Will oflfoaded ins require a dual read?
   logic [31:0] id;        // ID of offloaded ins
   logic        accepted;  // Was the offloaded instruction accepted or not?
 } xif_meta_t;
