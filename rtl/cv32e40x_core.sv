@@ -45,6 +45,7 @@ module cv32e40x_core import cv32e40x_pkg::*;
   parameter bit                         CLIC                                    = 0,
   parameter int unsigned                CLIC_ID_WIDTH                           = 5,
   parameter bit                         X_EXT                                   = 0,
+  parameter bit                         X_DUALREAD                              = 1,
   parameter int unsigned                X_NUM_RS                                = 2,
   parameter int unsigned                X_ID_WIDTH                              = 4,
   parameter int unsigned                X_MEM_WIDTH                             = 32,
@@ -141,7 +142,7 @@ module cv32e40x_core import cv32e40x_pkg::*;
 
   // Number of register file read ports
   // Core will only use two, but X_EXT may mandate 2 or 3
-  localparam int unsigned REGFILE_NUM_READ_PORTS = X_EXT ? X_NUM_RS : 2;
+  localparam int unsigned REGFILE_NUM_READ_PORTS = X_EXT ? (X_DUALREAD ? 4 : X_NUM_RS) : 2;
 
   // Zc is always present
   localparam bit ZC_EXT = 1;
@@ -354,6 +355,7 @@ module cv32e40x_core import cv32e40x_pkg::*;
 
   // eXtension interface signals
   logic        xif_offloading_id;
+  logic        xif_dualread;
 
   logic        unused_signals;
 
@@ -582,7 +584,8 @@ module cv32e40x_core import cv32e40x_pkg::*;
 
     // eXtension interface
     .xif_issue_if                 ( xif_issue_if              ),
-    .xif_offloading_o             ( xif_offloading_id         )
+    .xif_offloading_o             ( xif_offloading_id         ),
+    .xif_dualread_o               ( xif_dualread              )
   );
 
   /////////////////////////////////////////////////////
@@ -1137,8 +1140,9 @@ module cv32e40x_core import cv32e40x_pkg::*;
     .rst_n              ( rst_ni      ),
 
     // Read ports
-    .raddr_i            ( rf_raddr_id ),
-    .rdata_o            ( rf_rdata_id ),
+    .dualread_i         ( xif_dualread ),
+    .raddr_i            ( rf_raddr_id  ),
+    .rdata_o            ( rf_rdata_id  ),
 
     // Write ports
     .waddr_i            ( rf_waddr    ),
