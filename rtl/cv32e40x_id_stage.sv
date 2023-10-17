@@ -97,7 +97,8 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
 
   // eXtension interface
   cv32e40x_if_xif.cpu_issue xif_issue_if,
-  output logic              xif_offloading_o
+  output logic              xif_offloading_o,
+  output logic              xif_dualread_o
 );
 
   // Source/Destination register instruction index
@@ -201,6 +202,7 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
   logic                 xif_we;
   logic                 xif_exception;
   logic                 xif_dualwrite;
+  logic                 xif_dualread;
   logic                 xif_loadstore;
 
   // Signal for detection of first operation (of two) of table jumps.
@@ -651,6 +653,7 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
         id_ex_pipe_o.xif_meta.exception     <= xif_exception;
         id_ex_pipe_o.xif_meta.loadstore     <= xif_loadstore;
         id_ex_pipe_o.xif_meta.dualwrite     <= xif_dualwrite;
+        id_ex_pipe_o.xif_meta.dualread      <= xif_dualread;
         id_ex_pipe_o.xif_meta.accepted      <= xif_insn_accept;
 
       end else if (ex_ready_i) begin
@@ -720,6 +723,7 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
       // Keep xif_offloading_o high after an offloaded instruction was accepted or rejected to get
       // a new instruction ID from the IF stage
       assign xif_offloading_o             = xif_issue_if.issue_valid || xif_accepted_q || xif_rejected_q;
+      assign xif_dualread_o = xif_dualread;
 
       assign xif_issue_if.issue_req.instr = instr;
       assign xif_issue_if.issue_req.mode  = PRIV_LVL_M;
@@ -759,6 +763,7 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
       assign xif_we        = xif_issue_if.issue_valid && xif_issue_if.issue_resp.writeback;
       assign xif_exception = xif_issue_if.issue_valid && xif_issue_if.issue_resp.exc;
       assign xif_dualwrite = xif_issue_if.issue_valid && xif_issue_if.issue_resp.dualwrite;
+      assign xif_dualread  = xif_issue_if.issue_valid && xif_issue_if.issue_resp.dualread;
       assign xif_loadstore = xif_issue_if.issue_valid && xif_issue_if.issue_resp.loadstore;
 
     end else begin : no_x_ext
@@ -771,6 +776,8 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
       assign xif_we                           = 1'b0;
       assign xif_exception                    = 1'b0;
       assign xif_dualwrite                    = 1'b0;
+      assign xif_dualread                     = 1'b0;
+      assign xif_dualread_o                     = 1'b0;
       assign xif_loadstore                    = 1'b0;
 
       assign xif_issue_if.issue_valid         = 1'b0;
