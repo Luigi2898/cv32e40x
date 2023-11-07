@@ -51,7 +51,7 @@ module cv32e40x_core import cv32e40x_pkg::*;
   parameter int unsigned                X_ID_WIDTH                              = 4,
   parameter int unsigned                X_MEM_WIDTH                             = 32,
   parameter int unsigned                X_RFR_WIDTH                             = 32,
-  parameter int unsigned                X_RFW_WIDTH                             = 32,
+  parameter int unsigned                X_RFW_WIDTH                             = 64,
   parameter logic [31:0]                X_MISA                                  = 32'h00000000,
   parameter logic [1:0]                 X_ECS_XS                                = 2'b00,
   parameter int unsigned                NUM_MHPMCOUNTERS                        = 1
