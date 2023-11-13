@@ -44,7 +44,7 @@ module cv32e40x_register_file_wrapper import cv32e40x_pkg::*;
         output rf_data_t     rdata_o [REGFILE_NUM_READ_PORTS],
     
         // Write ports
-        input logic         dualwrite_i,
+        input  logic        dualwrite_i,
         input rf_addr_t     waddr_i [REGFILE_NUM_WRITE_PORTS],
         input rf_data_t     wdata_i [REGFILE_NUM_WRITE_PORTS],
         input logic         we_i [REGFILE_NUM_WRITE_PORTS]
@@ -76,17 +76,18 @@ module cv32e40x_register_file_wrapper import cv32e40x_pkg::*;
     endgenerate
 
     generate
-        always_comb begin : dualwrite
-          if (dualwrite_i) begin
-            waddr[0] = waddr_i[0];
-            waddr[1] = waddr_i[0] ^ 1'b1;
-          end
-          else begin
-            waddr[0] = waddr_i[0];
-            waddr[1] = '0;
-          end
+      always_comb begin : dualwrite
+        if (dualwrite_i) begin
+          waddr[0] = waddr_i[0];
+          waddr[1] = waddr_i[0] ^ 1'b1;
         end
-    endgenerate
+        else begin
+          waddr[0] = waddr_i[0];
+          waddr[1] = '0;
+        end
+      end
+  endgenerate
+    
 
     cv32e40x_register_file
     #(
@@ -103,7 +104,7 @@ module cv32e40x_register_file_wrapper import cv32e40x_pkg::*;
       .rdata_o            ( rdata_o            ),
     
       // Write ports
-      .waddr_i            ( waddr            ),
+      .waddr_i            ( waddr              ),
       .wdata_i            ( wdata_i            ),
       .we_i               ( we_i               )
                  

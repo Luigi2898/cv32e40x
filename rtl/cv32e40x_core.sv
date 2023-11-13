@@ -189,9 +189,9 @@ module cv32e40x_core import cv32e40x_pkg::*;
   logic        debug_req_gated;
 
   // Register File Write Back
-  logic        rf_we_wb;
+  logic [1:0]  rf_we_wb;
   rf_addr_t    rf_waddr_wb;
-  logic [31:0] rf_wdata_wb;
+  logic [63:0] rf_wdata_wb;
 
   // Forwarding RF from EX
   logic [31:0] rf_wdata_ex;
@@ -588,7 +588,7 @@ module cv32e40x_core import cv32e40x_pkg::*;
     .xif_issue_if                 ( xif_issue_if              ),
     .xif_offloading_o             ( xif_offloading_id         ),
     .xif_dualread_o               ( xif_dualread              ),
-    .xif_dualwrite_o              ( xif_dualwrite             )
+    .xif_dualwrite_o              ( xif_dualwrite              )
   );
 
   /////////////////////////////////////////////////////
@@ -1139,19 +1139,19 @@ module cv32e40x_core import cv32e40x_pkg::*;
   )
   register_file_wrapper_i
   (
-    .clk                ( clk           ),
-    .rst_n              ( rst_ni        ),
+    .clk                ( clk         ),
+    .rst_n              ( rst_ni      ),
 
     // Read ports
-    .dualread_i         ( xif_dualread  ),
-    .raddr_i            ( rf_raddr_id   ),
-    .rdata_o            ( rf_rdata_id   ),
+    .dualread_i         ( xif_dualread ),
+    .raddr_i            ( rf_raddr_id  ),
+    .rdata_o            ( rf_rdata_id  ),
 
     // Write ports
-    .dualwrite_i        ( xif_dualwrite ),
-    .waddr_i            ( rf_waddr      ),
-    .wdata_i            ( rf_wdata      ),
-    .we_i               ( rf_we         )
+    .dualwrite_i         ( xif_dualwrite ),
+    .waddr_i            ( rf_waddr    ),
+    .wdata_i            ( rf_wdata    ),
+    .we_i               ( rf_we       )
   );
 
 

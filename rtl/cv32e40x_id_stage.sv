@@ -778,7 +778,7 @@ module cv32e40x_id_stage import cv32e40x_pkg::*;
       assign xif_we                           = 1'b0;
       assign xif_exception                    = 1'b0;
       assign xif_dualwrite                    = 1'b0;
-      assign xif_dualwrite_o                    = 1'b0;
+      assign xif_dualwrite_o                  = 1'b0;
       assign xif_dualread                     = 1'b0;
       assign xif_dualread_o                   = 1'b0;
       assign xif_loadstore                    = 1'b0;

@@ -55,9 +55,9 @@ module cv32e40x_wb_stage import cv32e40x_pkg::*;
   input  align_status_e lsu_align_status_i,
 
   // Register file interface
-  output logic          rf_we_wb_o,     // Register file write enable
+  output logic [1:0]    rf_we_wb_o,     // Register file write enable
   output rf_addr_t      rf_waddr_wb_o,  // Register file write address
-  output logic [31:0]   rf_wdata_wb_o,  // Register file write data
+  output logic [63:0]   rf_wdata_wb_o,  // Register file write data
 
   // LSU handshake interface
   input  logic          lsu_valid_i,
