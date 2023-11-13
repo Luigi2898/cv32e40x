@@ -357,6 +357,7 @@ module cv32e40x_core import cv32e40x_pkg::*;
   // eXtension interface signals
   logic        xif_offloading_id;
   logic        xif_dualread;
+  logic        xif_dualwrite;
 
   logic        unused_signals;
 
@@ -586,7 +587,8 @@ module cv32e40x_core import cv32e40x_pkg::*;
     // eXtension interface
     .xif_issue_if                 ( xif_issue_if              ),
     .xif_offloading_o             ( xif_offloading_id         ),
-    .xif_dualread_o               ( xif_dualread              )
+    .xif_dualread_o               ( xif_dualread              ),
+    .xif_dualwrite_o              ( xif_dualwrite             )
   );
 
   /////////////////////////////////////////////////////
@@ -1137,18 +1139,19 @@ module cv32e40x_core import cv32e40x_pkg::*;
   )
   register_file_wrapper_i
   (
-    .clk                ( clk         ),
-    .rst_n              ( rst_ni      ),
+    .clk                ( clk           ),
+    .rst_n              ( rst_ni        ),
 
     // Read ports
-    .dualread_i         ( xif_dualread ),
-    .raddr_i            ( rf_raddr_id  ),
-    .rdata_o            ( rf_rdata_id  ),
+    .dualread_i         ( xif_dualread  ),
+    .raddr_i            ( rf_raddr_id   ),
+    .rdata_o            ( rf_rdata_id   ),
 
     // Write ports
-    .waddr_i            ( rf_waddr    ),
-    .wdata_i            ( rf_wdata    ),
-    .we_i               ( rf_we       )
+    .dualwrite_i        ( xif_dualwrite ),
+    .waddr_i            ( rf_waddr      ),
+    .wdata_i            ( rf_wdata      ),
+    .we_i               ( rf_we         )
   );
 
 
