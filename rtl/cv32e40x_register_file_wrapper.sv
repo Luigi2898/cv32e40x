@@ -31,6 +31,7 @@
 module cv32e40x_register_file_wrapper import cv32e40x_pkg::*;
 #(
       parameter int unsigned REGFILE_NUM_READ_PORTS = 2,
+      parameter int unsigned REGFILE_NUM_WRITE_PORTS = 2,
       parameter rv32_e       RV32                   = RV32I
 )
 (
@@ -79,7 +80,7 @@ module cv32e40x_register_file_wrapper import cv32e40x_pkg::*;
       always_comb begin : dualwrite
         if (dualwrite_i) begin
           waddr[0] = waddr_i[0];
-          waddr[1] = waddr_i[0] ^ 1'b1;
+          waddr[1] = waddr_i[1];
         end
         else begin
           waddr[0] = waddr_i[0];
@@ -92,6 +93,7 @@ module cv32e40x_register_file_wrapper import cv32e40x_pkg::*;
     cv32e40x_register_file
     #(
       .REGFILE_NUM_READ_PORTS       ( REGFILE_NUM_READ_PORTS ),
+      .REGFILE_NUM_WRITE_PORTS      ( REGFILE_NUM_WRITE_PORTS),
       .RV32                         ( RV32                   )
     )
     register_file_i

@@ -1242,9 +1242,9 @@ typedef struct packed {
 
 // EX/WB pipeline
 typedef struct packed {
-  logic         rf_we;
-  rf_addr_t     rf_waddr;
-  logic [31:0]  rf_wdata;
+  logic     [1:0]   rf_we;
+  rf_addr_t [1:0]        rf_waddr ;
+  logic     [63:0]  rf_wdata;
 
   // ALU
   logic         alu_jmp_qual;           // Qualified with alu_en
